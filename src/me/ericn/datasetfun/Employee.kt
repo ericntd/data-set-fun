@@ -15,10 +15,10 @@ val names = arrayOf("Syeda", "Fern", "Gabriella", "Troy", "Ana", "Khadija", "Ame
 
 
 data class Employee(
-    val name: String = names.random(),
-    val department: String = departments.random(),
-    val salary: Int = Random.nextInt(50_000, 100_000),
-    val title : String = titles.random()
+        val name: String = names.random(),
+        val department: String = departments.random(),
+        val salary: Int = Random.nextInt(50_000, 100_000),
+        val title: String = titles.random()
 ) {
 
     companion object {
@@ -33,7 +33,7 @@ data class Employee(
             println("----- CSV content above")
             println("")
 
-            val scanner =  Scanner(str)
+            val scanner = Scanner(str)
 
             var fileWriter: FileWriter? = null
 
@@ -60,7 +60,7 @@ data class Employee(
             }
         }
 
-        fun generateTestDataStr() : String {
+        private fun generateTestDataStr(): String {
             val stringBuilder = StringBuilder()
             val CSV_HEADER = "Name,Department,Salary,Title"
             stringBuilder.append(CSV_HEADER)
@@ -78,6 +78,38 @@ data class Employee(
                 stringBuilder.append('\n')
             }
             return stringBuilder.toString()
+        }
+
+        fun readTestDataFromStr(): List<Employee> {
+            // You only need to run generateTestData() once
+//            generateTestData()
+
+            val COLUMN_ID_NAME = 0
+            val COLUMN_ID_DEP = 1
+            val COLUMN_ID_SALARY = 2
+            val COLUMN_ID_TITLE = 3
+
+            val employees = ArrayList<Employee>()
+            val reader = Scanner(generateTestDataStr())
+
+            // Read CSV header
+            reader.nextLine()
+
+            // Read the file line by line starting from the second line
+            while (reader.hasNextLine()) {
+                val tokens = reader.nextLine().split(",")
+                if (tokens.isNotEmpty()) {
+                    val customer = Employee(
+                            tokens[COLUMN_ID_NAME],
+                            tokens[COLUMN_ID_DEP],
+                            Integer.parseInt(tokens[COLUMN_ID_SALARY]),
+                            tokens[COLUMN_ID_TITLE]
+                    )
+                    employees.add(customer)
+                }
+            }
+
+            return employees
         }
 
         fun readTestData(): List<Employee> {
@@ -106,10 +138,10 @@ data class Employee(
                     val tokens = line.split(",")
                     if (tokens.isNotEmpty()) {
                         val customer = Employee(
-                            tokens[COLUMN_ID_NAME],
-                            tokens[COLUMN_ID_DEP],
-                            Integer.parseInt(tokens[COLUMN_ID_SALARY]),
-                            tokens[COLUMN_ID_TITLE]
+                                tokens[COLUMN_ID_NAME],
+                                tokens[COLUMN_ID_DEP],
+                                Integer.parseInt(tokens[COLUMN_ID_SALARY]),
+                                tokens[COLUMN_ID_TITLE]
                         )
                         employees.add(customer)
                     }
